@@ -1,0 +1,29 @@
+POST : User/register
+Request:
+{
+    "age": int,
+    "email": "string",
+    "password": "string",
+    "username": "string"
+}
+Respone:
+status 201
+data
+{
+    "age": 0,
+    "email": "admin@gmail.com",
+    "password": "admin",
+    "username": "admin"
+}
+POST: User/Login
+Request:
+{
+    "email": "string",
+    "password": "string",
+}
+Respone:
+status 200
+data:
+{
+    "token":"jwt string"
+}
