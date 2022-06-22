@@ -16,5 +16,5 @@ type Config struct {
 	Db_User        string `env:"User"`
 	Db_Password    string `env:"Password"`
 	Db_Dbname      string `env:"Dbname"`
-	PORT           string `env:PORT`
+	PORT           int    `env:"_PORT"`
 }

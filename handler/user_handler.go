@@ -8,8 +8,10 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gorilla/mux"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserHandlerInterface interface {
@@ -41,7 +43,7 @@ func (u *UserHandler) UserHandler(w http.ResponseWriter, r *http.Request) {
 func (u *UserHandler) UserGetAll(w http.ResponseWriter, r *http.Request) {
 	var result = []user.User{}
 	var userss = user.User{}
-	sqlGet := "Select * from users;"
+	sqlGet := "Select u_id, u_username, u_email, u_age from users;"
 	rows, err := config.Db.Query(sqlGet)
 	if err != nil {
 		panic(err)
@@ -53,10 +55,7 @@ func (u *UserHandler) UserGetAll(w http.ResponseWriter, r *http.Request) {
 			&userss.User_id,
 			&userss.Username,
 			&userss.Email,
-			&userss.Password,
 			&userss.Age,
-			&userss.Created_at,
-			&userss.Updated_at,
 		); err != nil {
 			fmt.Println("No Data", err)
 		}
@@ -67,8 +66,46 @@ func (u *UserHandler) UserGetAll(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 }
 func (u *UserHandler) UserPostRegister(w http.ResponseWriter, r *http.Request) {
+	var users = user.User{}
+	// if users.Email == "" || !strings.Contains(users.Email, "@gmail.com") ||
+	// 	users.Username == "" || users.Password == "" || len(users.Password) < 6 ||
+	// 	users.Age == 0 || users.Age <= 8 {
+	// 	errors.New("Data harus di isi semua")
+	// } else {
+	json.NewDecoder(r.Body).Decode(&users)
+	password := []byte(users.Password)
+	sqlSt := `insert into users (u_username, u_email, u_pass, u_age,u_created_date, u_updated_date)
+		values ($1, $2, $3, $4, $5, $6)
+		returning u_id;`
 
+	HashPassword, _ := bcrypt.GenerateFromPassword(password, bcrypt.DefaultCost)
+	err := config.Db.QueryRow(sqlSt,
+		users.Username,
+		users.Email,
+		string(HashPassword),
+		users.Age,
+		time.Now(),
+		time.Now(),
+	).Scan(&users.User_id)
+	if err != nil {
+		panic(err)
+	}
+	Register_respone := user.RegisterRespone{
+		R_user_id:  users.User_id,
+		R_email:    users.Email,
+		R_username: users.Username,
+		R_age:      users.Age,
+	}
+	jsonData, _ := json.Marshal(Register_respone)
+	w.Header().Add("Content-Type", "application/json")
+	w.Write(jsonData)
+
+	fmt.Println(users)
+	fmt.Println(Register_respone)
+	return
+	//}
 }
+
 func (u *UserHandler) UserPostLogin(w http.ResponseWriter, r *http.Request)         {}
 func (u *UserHandler) UserUpdate(w http.ResponseWriter, r *http.Request, id string) {}
 func (u *UserHandler) UserDelete(w http.ResponseWriter, r *http.Request, id string) {

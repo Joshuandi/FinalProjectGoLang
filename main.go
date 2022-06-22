@@ -1,7 +1,7 @@
 package main
 
 import (
-	"FinalProjectGoLang/auth"
+	//"FinalProjectGoLang/auth"
 	"FinalProjectGoLang/config"
 	comment_handler "FinalProjectGoLang/handler"
 	photo_handler "FinalProjectGoLang/handler"
@@ -60,11 +60,11 @@ func main() {
 	r.HandleFunc("/socialmedias", socialMediaHandler.SocialMediaHandler)
 	r.HandleFunc("/socialmedias/{id}", socialMediaHandler.SocialMediaHandler)
 
-	auth := auth.NewAuthMiddleware(&cfg)
-	r.Use(auth.AuthLoginValidation)
-	r.Use(auth.AuthTokenValidation)
+	//auth := auth.NewAuthMiddleware(&cfg)
+	//r.Use(auth.AuthLoginValidation)
+	//r.Use(auth.AuthTokenValidation)
 
-	fmt.Println("Now Loading on Port 0.0.0.0" + cfg.PORT)
+	fmt.Println("Now Loading on Port", cfg.PORT)
 	srv := &http.Server{
 		Handler: r,
 		Addr:    "127.0.0.1:8088",

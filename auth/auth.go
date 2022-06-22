@@ -12,6 +12,7 @@ import (
 type AuthMiddlewareInterface interface {
 	AuthLoginValidation(next http.Handler) http.Handler
 	AuthTokenValidation(next http.Handler) http.Handler
+	AuthRegisterValidation(next http.Handler) http.Handler
 }
 type AuthMiddleware struct {
 	cfg config.Config
@@ -31,7 +32,11 @@ func (a *AuthMiddleware) AuthLoginValidation(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
+func (a *AuthMiddleware) AuthRegisterValidation(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
+	})
+}
 func (a *AuthMiddleware) AuthTokenValidation(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if authhandler := strings.Split(r.Header.Get("Authorization"), " "); len(authhandler) == 2 && authhandler[0] == "Bearer" {
