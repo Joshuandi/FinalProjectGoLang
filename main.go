@@ -3,10 +3,8 @@ package main
 import (
 	//"FinalProjectGoLang/auth"
 	"FinalProjectGoLang/config"
-	comment_handler "FinalProjectGoLang/handler"
-	photo_handler "FinalProjectGoLang/handler"
-	social_media_handler "FinalProjectGoLang/handler"
-	user_handler "FinalProjectGoLang/handler"
+	"FinalProjectGoLang/handler"
+	"FinalProjectGoLang/model"
 	"database/sql"
 	"fmt"
 	"log"
@@ -42,21 +40,21 @@ func main() {
 	r := mux.NewRouter()
 
 	//user
-	userHandler := user_handler.NewUserhandler(config.Db)
+	userHandler := handler.NewUserhandler(config.Db, &model.User{})
 	r.HandleFunc("/users/register", userHandler.UserHandler)
 	r.HandleFunc("/users/login", userHandler.UserHandler)
 	r.HandleFunc("/users", userHandler.UserHandler)
 	r.HandleFunc("/users/{id}", userHandler.UserHandler)
 	//photo
-	photoHandler := photo_handler.NewPhotohandler(config.Db)
+	photoHandler := handler.NewPhotohandler(config.Db, &model.Photo{})
 	r.HandleFunc("/photos", photoHandler.PhotoHandler)
 	r.HandleFunc("/photos/{id}", photoHandler.PhotoHandler)
 	//comment
-	commentHandler := comment_handler.NewCommenthandler(config.Db)
+	commentHandler := handler.NewCommenthandler(config.Db, &model.Comment{})
 	r.HandleFunc("/comments", commentHandler.CommentHandler)
 	r.HandleFunc("/comments/{id}", commentHandler.CommentHandler)
 	//social media
-	socialMediaHandler := social_media_handler.NewSocialMediahandler(config.Db)
+	socialMediaHandler := handler.NewSocialMediahandler(config.Db, &model.SocialMedia{})
 	r.HandleFunc("/socialmedias", socialMediaHandler.SocialMediaHandler)
 	r.HandleFunc("/socialmedias/{id}", socialMediaHandler.SocialMediaHandler)
 
