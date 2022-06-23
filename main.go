@@ -40,7 +40,7 @@ func main() {
 	r := mux.NewRouter()
 
 	//user
-	userHandler := handler.NewUserhandler(config.Db, &model.User{})
+	userHandler := handler.NewUserhandler(config.Db)
 	r.HandleFunc("/users/register", userHandler.UserHandler)
 	r.HandleFunc("/users/login", userHandler.UserHandler)
 	r.HandleFunc("/users", userHandler.UserHandler)

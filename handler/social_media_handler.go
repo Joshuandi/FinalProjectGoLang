@@ -72,7 +72,7 @@ func (s *SocialMediaHandler) SocialMediaPost(w http.ResponseWriter, r *http.Requ
 	json.NewDecoder(r.Body).Decode(&s.sm)
 	sqlSt := `insert into social_media (sm_name, sm_url, sm_created_at, user_id)
 		values ($1, $2, $3, $4)
-		returning u_id;`
+		returning sm_id;`
 	err := config.Db.QueryRow(sqlSt,
 		s.sm.Name,
 		s.sm.SocialMedia_url,

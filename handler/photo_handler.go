@@ -104,7 +104,7 @@ func (p *PhotoHandler) PhotoUpdate(w http.ResponseWriter, r *http.Request, id st
 
 		//var orders = order.Order{}
 		json.NewDecoder(r.Body).Decode(&p.photo)
-		sqlSt := `update photo set 
+		sqlSt := `update photo set
 		p_title = $2, p_caption = $3, p_photo_url = $4, p_updated_date = $5 where p_id = $1;`
 		res, err := config.Db.Exec(sqlSt,
 			id,

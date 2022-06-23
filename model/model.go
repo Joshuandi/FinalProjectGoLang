@@ -14,6 +14,20 @@ type User struct {
 	Updated_at time.Time `json:"updated_at"`
 }
 
+type UserPostLogin struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type UserToken struct {
+	TokenString string `json:"token"`
+}
+
+type UserRes struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 type UserRegisterRespone struct {
 	R_user_id  int    `json:"user_id"`
 	R_username string `json:"username"`

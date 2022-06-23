@@ -1,11 +1,12 @@
 POST : User/register
 Request:
-{
-    "age": int,
-    "email": "string",
-    "password": "string",
-    "username": "string"
-}
+    {
+        "age": int,
+        "email": "string",
+        "password": "string",
+        "username": "string"
+    }
+
 Respone:
 status 201
 data
@@ -26,4 +27,10 @@ status 200
 data:
 {
     "token":"jwt string"
+}
+
+PUT Users:
+{
+    "username":"joshua1000",
+    "email":"joshuand11@gmail.com",
 }
